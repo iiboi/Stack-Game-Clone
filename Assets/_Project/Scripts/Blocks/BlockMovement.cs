@@ -6,7 +6,7 @@ public class BlockMovement : MonoBehaviour
     [SerializeField] private float speed = 9f;
     [SerializeField] private float limit = 6f;
     [SerializeField] private int directionFactor = 1;
-    [SerializeField] private bool isMovingOnX = true;
+    [SerializeField] public bool isMovingOnX = true;
 
 
 
