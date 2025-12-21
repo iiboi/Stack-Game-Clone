@@ -56,8 +56,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64d44d717fda9c74ab6de9f56dd7580d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockMovement
-  speed: 2
-  directionLimit: 0
+  speed: 9
+  limit: 6
+  directionFactor: 1
+  isMovingOnX: 1
 --- !u!23 &493430776602250833
 MeshRenderer:
   m_ObjectHideFlags: 0
