@@ -4,55 +4,190 @@ public class BlockSpawnManager : MonoBehaviour
 {
     [Header("Referances")]
     [SerializeField] private GameObject blockPrefab;
+
     [SerializeField] private Transform lastBlock;
+    // Sahnedeki en son yerleştirilmiş bloğun referansı.
     
     [Header("Settings")]
+
+    // Yeni bloğun, bir önceki bloktan ne kadar uzaklıkta doğacağını belirler.
     [SerializeField] private float spawnDistance = 6f;
     
+    // Yeni doğan bloğun hangi eksende hareket edeceğini belirler.
     [SerializeField] private bool isMovingOnX = true;
+
+    // Bloğun mesh sınırlarına göre hesaplanan yüksekliği.
     private float blockHeight;
 
+    // Şu anda hareket eden blok.
     GameObject currentBlock;
 
     private void Start() 
     {
+        // Bloğun yüksekliğini mesh boyutuna göre al.
         blockHeight = lastBlock.GetComponent<MeshRenderer>().bounds.size.y;
+
+        // İlk hareket eden bloğu oluştur.
         SpawnBlock();
     }
 
     private void Update() 
     {
+        // Fare tıklanınca bloğun hareketini durdur ve kesme işlemini yap.
         if (Input.GetMouseButtonDown(0))
         {
             currentBlock.GetComponent<BlockMovement>().StopMoving();
-            SpawnBlock();
+            SplitBlock();
         }
-        
     }
 
     public void SpawnBlock()
     {
+        // Yeni bloğun doğacağı pozisyon.
         Vector3 spawnPos;
 
-        if(isMovingOnX)
+        if (isMovingOnX)
         {
-            spawnPos = new Vector3(lastBlock.position.x + spawnDistance, lastBlock.position.y + blockHeight, lastBlock.position.z);
+            // X ekseninde doğacak şekilde pozisyonu ayarla.
+            spawnPos = new Vector3(
+                lastBlock.position.x + spawnDistance,
+                lastBlock.position.y + blockHeight,
+                lastBlock.position.z
+            );
         }
         else
         {
-            spawnPos = new Vector3(lastBlock.position.x, lastBlock.position.y + blockHeight, lastBlock.position.z + spawnDistance);
+            // Z ekseninde doğacak şekilde pozisyonu ayarla.
+            spawnPos = new Vector3(
+                lastBlock.position.x,
+                lastBlock.position.y + blockHeight,
+                lastBlock.position.z + spawnDistance
+            );
         }
 
+        // Hesaplanan pozisyonda yeni bir blok oluştur.
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
 
+        // Yeni bloğun hareket scriptini al.
         BlockMovement movementscript = newBlock.GetComponent<BlockMovement>();
-
+        
+        // Bloğun hareket edeceği ekseni ayarla.
         movementscript.isMovingOnX = isMovingOnX;
 
-        lastBlock = newBlock.transform;
+        // Bu bloğu şu anki aktif (hareket eden) blok olarak ata.
+        currentBlock = newBlock;
 
+        // Yeni bloğun ölçeğini bir önceki blokla aynı yap.
+        newBlock.transform.localScale = lastBlock.localScale;
+    }
+
+    public void SplitBlock()
+    {
+        if (isMovingOnX)
+        {
+            // Mevcut blok ile önceki blok arasındaki X ekseni farkını hesapla.
+            float diffX = currentBlock.transform.position.x - lastBlock.position.x;
+
+            // Kesildikten sonra kalacak yeni genişliği hesapla.
+            float newXSize = lastBlock.localScale.x - Mathf.Abs(diffX);
+
+            // Negatif ölçek oluşmasını engelle.
+            if (newXSize < 0) { newXSize = 0; }
+
+            // Kesimden sonra bloğun yeni ölçeğini uygula.
+            currentBlock.transform.localScale = new Vector3(
+                newXSize,
+                currentBlock.transform.localScale.y,
+                currentBlock.transform.localScale.z
+            );
+            
+            // Kalan parçayı ortalayacak şekilde bloğun pozisyonunu ayarla.
+            float newXPosition = lastBlock.position.x + (diffX / 2);
+
+            currentBlock.transform.position = new Vector3(
+                newXPosition,
+                currentBlock.transform.position.y,
+                currentBlock.transform.position.z
+            );
+
+            Vector3 rubbleXScale = new Vector3(Mathf.Abs(diffX), lastBlock.localScale.y,
+             lastBlock.localScale.z);
+
+            float direction = diffX > 0 ? 1 : -1;
+            float rubbleXPos = lastBlock.position.x + (lastBlock.localScale.x / 2 * direction)
+             + (diffX / 2);
+
+            Vector3 rubblePos = new Vector3(rubbleXPos, currentBlock.transform.position.y,
+            currentBlock.transform.position.z);
+
+            CreateRubble(rubblePos, rubbleXScale);
+        }
+        else
+        {
+            // Mevcut blok ile önceki blok arasındaki Z ekseni farkını hesapla.
+            float diffZ = currentBlock.transform.position.z - lastBlock.position.z;
+
+            // Kesildikten sonra kalacak yeni derinliği hesapla.
+            float newZSize = lastBlock.localScale.z - Mathf.Abs(diffZ);
+
+            // Negatif ölçek oluşmasını engelle.
+            if (newZSize < 0) { newZSize = 0; }
+
+            // Kesimden sonra bloğun yeni ölçeğini uygula.
+            currentBlock.transform.localScale = new Vector3(
+                currentBlock.transform.localScale.x,
+                currentBlock.transform.localScale.y,
+                newZSize
+            );
+
+            // Kalan parçayı ortalayacak şekilde bloğun pozisyonunu ayarla.
+            float newZPosition = lastBlock.position.z + (diffZ / 2);
+
+            currentBlock.transform.position = new Vector3(
+                currentBlock.transform.position.x,
+                currentBlock.transform.position.y,
+                newZPosition
+            );
+
+            Vector3 rubbleZScale = new Vector3(lastBlock.localScale.x,
+             lastBlock.localScale.y, Mathf.Abs(diffZ));
+
+            float direction = diffZ > 0 ? 1 : -1;
+            float rubbleZPos = lastBlock.position.z + (lastBlock.localScale.z / 2 * direction)
+             + (diffZ / 2);
+
+            Vector3 rubblePos = new Vector3(currentBlock.transform.position.x,
+             currentBlock.transform.position.y, rubbleZPos);
+
+            CreateRubble(rubblePos, rubbleZScale);
+        }
+
+        // Bir sonraki blok için hareket eksenini değiştir.
         isMovingOnX = !isMovingOnX;
 
-        currentBlock = newBlock;
+        // Son yerleştirilen bloğu güncelle.
+        lastBlock = currentBlock.transform;
+
+        // Yeni hareket eden bloğu oluştur.
+        SpawnBlock();
+    }
+
+    // Kesilen parçayı oluştur.
+    private void CreateRubble(Vector3 pos, Vector3 scale)
+    {   
+        GameObject rubble;
+
+        // Kesilen parçayı yarat.
+        rubble = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+        rubble.transform.position = pos;
+        rubble.transform.localScale = scale;
+
+        // Parçaya Rigidbody ekle.
+        rubble.AddComponent<Rigidbody>();
+
+        // 5 Saniye sonra parçayı yok et.
+        Destroy(rubble, 5f);
+
     }
 }
