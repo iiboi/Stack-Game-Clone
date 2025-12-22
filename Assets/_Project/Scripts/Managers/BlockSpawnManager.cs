@@ -12,6 +12,7 @@ public class BlockSpawnManager : MonoBehaviour
 
     // Yeni bloğun, bir önceki bloktan ne kadar uzaklıkta doğacağını belirler.
     [SerializeField] private float spawnDistance = 6f;
+    [SerializeField] private float blockTolerance = 0.13f;
     
     // Yeni doğan bloğun hangi eksende hareket edeceğini belirler.
     [SerializeField] private bool isMovingOnX = true;
@@ -88,11 +89,23 @@ public class BlockSpawnManager : MonoBehaviour
             // Mevcut blok ile önceki blok arasındaki X ekseni farkını hesapla.
             float diffX = currentBlock.transform.position.x - lastBlock.position.x;
 
+            //Oyuncuya blokların X ekseninde üst üste gelmesi için tolerans bırak.
+            if (Mathf.Abs(diffX) <= blockTolerance)
+            {
+                currentBlock.transform.position = new Vector3(lastBlock.position.x,
+                currentBlock.transform.position.y, lastBlock.position.z);
+                
+                diffX = 0;
+            }
+
             // Kesildikten sonra kalacak yeni genişliği hesapla.
             float newXSize = lastBlock.localScale.x - Mathf.Abs(diffX);
 
             // Negatif ölçek oluşmasını engelle.
-            if (newXSize < 0) { newXSize = 0; }
+            if (newXSize < 0) 
+            {
+                newXSize = 0; 
+            }
 
             // Kesimden sonra bloğun yeni ölçeğini uygula.
             currentBlock.transform.localScale = new Vector3(
@@ -110,22 +123,36 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.z
             );
 
-            Vector3 rubbleXScale = new Vector3(Mathf.Abs(diffX), lastBlock.localScale.y,
-             lastBlock.localScale.z);
+            // Eğer parça üretmek gerekiyorsa parça üret.
+            if (Mathf.Abs(diffX) > 0)
+            {
+                //Parçanın X boyutunu hesapla.
+                Vector3 rubbleXScale = new Vector3(Mathf.Abs(diffX), lastBlock.localScale.y,
+                lastBlock.localScale.z);
 
-            float direction = diffX > 0 ? 1 : -1;
-            float rubbleXPos = lastBlock.position.x + (lastBlock.localScale.x / 2 * direction)
-             + (diffX / 2);
+                float direction = diffX > 0 ? 1 : -1;
+                float rubbleXPos = lastBlock.position.x + (lastBlock.localScale.x / 2 * direction)
+                + (diffX / 2);
 
-            Vector3 rubblePos = new Vector3(rubbleXPos, currentBlock.transform.position.y,
-            currentBlock.transform.position.z);
+                //Parçanın X Pozisyonunu hesapla
+                Vector3 rubblePos = new Vector3(rubbleXPos, currentBlock.transform.position.y,
+                currentBlock.transform.position.z);
 
-            CreateRubble(rubblePos, rubbleXScale);
+                CreateRubble(rubblePos, rubbleXScale);
+            }
         }
         else
         {
             // Mevcut blok ile önceki blok arasındaki Z ekseni farkını hesapla.
             float diffZ = currentBlock.transform.position.z - lastBlock.position.z;
+            
+            //Oyuncuya blokların Z ekseninde üst üste gelmesi için tolerans bırak.
+            if (Mathf.Abs(diffZ) <= blockTolerance)
+            {
+                currentBlock.transform.position = new Vector3(lastBlock.position.x,
+                currentBlock.transform.position.y, lastBlock.position.z);
+                diffZ = 0;
+            }
 
             // Kesildikten sonra kalacak yeni derinliği hesapla.
             float newZSize = lastBlock.localScale.z - Mathf.Abs(diffZ);
@@ -149,17 +176,23 @@ public class BlockSpawnManager : MonoBehaviour
                 newZPosition
             );
 
-            Vector3 rubbleZScale = new Vector3(lastBlock.localScale.x,
-             lastBlock.localScale.y, Mathf.Abs(diffZ));
+            if (Mathf.Abs(diffZ) > 0)
+            {
+                
+                // Parçanın Z Boyutunu hesapla.
+                Vector3 rubbleZScale = new Vector3(lastBlock.localScale.x,
+                lastBlock.localScale.y, Mathf.Abs(diffZ));
 
-            float direction = diffZ > 0 ? 1 : -1;
-            float rubbleZPos = lastBlock.position.z + (lastBlock.localScale.z / 2 * direction)
-             + (diffZ / 2);
+                float direction = diffZ > 0 ? 1 : -1;
+                float rubbleZPos = lastBlock.position.z + (lastBlock.localScale.z / 2 * direction)
+                + (diffZ / 2);
 
-            Vector3 rubblePos = new Vector3(currentBlock.transform.position.x,
-             currentBlock.transform.position.y, rubbleZPos);
+                //Parçanın Z Pozisyonunu hesapla
+                Vector3 rubblePos = new Vector3(currentBlock.transform.position.x,
+                currentBlock.transform.position.y, rubbleZPos);
 
-            CreateRubble(rubblePos, rubbleZScale);
+                CreateRubble(rubblePos, rubbleZScale);
+            }
         }
 
         // Bir sonraki blok için hareket eksenini değiştir.
