@@ -266,6 +266,7 @@ GameObject:
   m_Component:
   - component: {fileID: 368568232}
   - component: {fileID: 368568233}
+  - component: {fileID: 368568234}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -302,8 +303,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockSpawnManager
   blockPrefab: {fileID: 6147015189474140803, guid: 8a9aa8fb220bafa49bc01b15685af90c, type: 3}
   lastBlock: {fileID: 1197148035}
+  currentBlock: {fileID: 0}
   spawnDistance: 6
+  blockTolerance: 0.13
+  blockHeight: 0
   isMovingOnX: 1
+--- !u!114 &368568234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368568231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4fc438ab49723243b7e625fe494ba68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0

@@ -110,13 +110,19 @@ public class BlockSpawnManager : MonoBehaviour
 
             // Kesildikten sonra kalacak yeni genişliği hesapla.
             float newXSize = lastBlock.localScale.x - Mathf.Abs(diffX);
-
-            // Negatif ölçek oluşmasını engelle.
-            if (newXSize < 0) 
+#region Kaybetme koşulu X
+            //
+            //  KAYBETME KOŞULU
+            //
+            if (newXSize <= 0)
             {
-                newXSize = 0; 
-            }
+                GameManager.instance.GameOver();
 
+                currentBlock.AddComponent<Rigidbody>();
+                
+                return;
+            }
+#endregion
             // Kesimden sonra bloğun yeni X ekseni ölçüsünü uygula.
             currentBlock.transform.localScale = new Vector3(
                 newXSize,
@@ -166,10 +172,19 @@ public class BlockSpawnManager : MonoBehaviour
 
             // Kesildikten sonra kalacak yeni derinliği hesapla.
             float newZSize = lastBlock.localScale.z - Mathf.Abs(diffZ);
+#region Kaybetme koşulu Z
+            //
+            // KAYBETME KOŞULU!
+            //
+            if (newZSize <= 0)
+            {
+                GameManager.instance.GameOver();
 
-            // Negatif ölçek oluşmasını engelle.
-            if (newZSize < 0) { newZSize = 0; }
-
+                currentBlock.AddComponent<Rigidbody>();
+                
+                return;
+            }
+#endregion
             // Kesimden sonra bloğun yeni ölçeğini uygula.
             currentBlock.transform.localScale = new Vector3(
                 currentBlock.transform.localScale.x,
