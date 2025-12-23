@@ -2,26 +2,33 @@ using UnityEngine;
 
 public class BlockSpawnManager : MonoBehaviour
 {
-    [Header("Referances")]
-    [SerializeField] private GameObject blockPrefab;
+#region Inspector
 
-    [SerializeField] private Transform lastBlock;
-    // Sahnedeki en son yerleştirilmiş bloğun referansı.
+    [Header("Referances")]
+    [SerializeField, Tooltip("Oluşturulacak bloğun referansı")]
+    private GameObject blockPrefab;
+
+    [SerializeField, Tooltip("Yerleştirilen son bloğun konumu (Başlangıçta Ground objesinin konumu).")]
+    private Transform lastBlock;
+    
+    [SerializeField, Tooltip("Oyun başladığında Hareket eden blok.")]
+    GameObject currentBlock;
     
     [Header("Settings")]
-
-    // Yeni bloğun, bir önceki bloktan ne kadar uzaklıkta doğacağını belirler.
-    [SerializeField] private float spawnDistance = 6f;
-    [SerializeField] private float blockTolerance = 0.13f;
+    [SerializeField, Tooltip("Yeni bloğun, doğacağı mesafenin uzaklığı.")]
+    private float spawnDistance = 6f;
     
-    // Yeni doğan bloğun hangi eksende hareket edeceğini belirler.
-    [SerializeField] private bool isMovingOnX = true;
-
-    // Bloğun mesh sınırlarına göre hesaplanan yüksekliği.
+    [SerializeField, Tooltip("Bloğun Göz yumulacak eksen farkı.")]
+    private float blockTolerance = 0.13f;
+    
+    [SerializeField, Tooltip("Bloğun Yüksekliği.")]
     private float blockHeight;
+    
+    [Header("State / Control")]
+    [SerializeField, Tooltip("Bloğun Yönü (İşaretliyse X, İşaretli değilse Z)")]
+    private bool isMovingOnX = true;
 
-    // Şu anda hareket eden blok.
-    GameObject currentBlock;
+#endregion
 
     private void Start() 
     {
@@ -42,6 +49,7 @@ public class BlockSpawnManager : MonoBehaviour
         }
     }
 
+#region Block Spawn
     public void SpawnBlock()
     {
         // Yeni bloğun doğacağı pozisyon.
@@ -81,7 +89,9 @@ public class BlockSpawnManager : MonoBehaviour
         // Yeni bloğun ölçeğini bir önceki blokla aynı yap.
         newBlock.transform.localScale = lastBlock.localScale;
     }
+#endregion
 
+#region Block Cut
     public void SplitBlock()
     {
         if (isMovingOnX)
@@ -107,7 +117,7 @@ public class BlockSpawnManager : MonoBehaviour
                 newXSize = 0; 
             }
 
-            // Kesimden sonra bloğun yeni ölçeğini uygula.
+            // Kesimden sonra bloğun yeni X ekseni ölçüsünü uygula.
             currentBlock.transform.localScale = new Vector3(
                 newXSize,
                 currentBlock.transform.localScale.y,
@@ -204,7 +214,9 @@ public class BlockSpawnManager : MonoBehaviour
         // Yeni hareket eden bloğu oluştur.
         SpawnBlock();
     }
-
+#endregion
+    
+#region Create Rubble    
     // Kesilen parçayı oluştur.
     private void CreateRubble(Vector3 pos, Vector3 scale)
     {   
@@ -222,5 +234,6 @@ public class BlockSpawnManager : MonoBehaviour
         // 5 Saniye sonra parçayı yok et.
         Destroy(rubble, 5f);
 
-    }
+    } 
+#endregion
 }
