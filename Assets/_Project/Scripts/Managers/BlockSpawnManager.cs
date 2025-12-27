@@ -106,6 +106,10 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.y, lastBlock.position.z);
                 
                 diffX = 0;
+
+                Debug.Log("Perfect X !");
+                //TODO
+                //    EFFECT
             }
 
             // Kesildikten sonra kalacak yeni genişliği hesapla.
@@ -156,6 +160,8 @@ public class BlockSpawnManager : MonoBehaviour
 
                 CreateRubble(rubblePos, rubbleXScale);
             }
+                //GameManager içerisindeki Score değişkenini artır.
+                GameManager.instance.IncreaseScore();
         }
         else
         {
@@ -167,7 +173,12 @@ public class BlockSpawnManager : MonoBehaviour
             {
                 currentBlock.transform.position = new Vector3(lastBlock.position.x,
                 currentBlock.transform.position.y, lastBlock.position.z);
+
                 diffZ = 0;
+
+                Debug.Log("Perfect Z !");
+                //TODO
+                //    EFFECT
             }
 
             // Kesildikten sonra kalacak yeni derinliği hesapla.
@@ -217,7 +228,10 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.y, rubbleZPos);
 
                 CreateRubble(rubblePos, rubbleZScale);
+
             }
+                //GameManager içerisindeki Score değişkenini artır.
+                GameManager.instance.IncreaseScore();
         }
 
         // Bir sonraki blok için hareket eksenini değiştir.
