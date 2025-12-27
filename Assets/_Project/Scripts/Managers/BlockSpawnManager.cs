@@ -5,6 +5,9 @@ public class BlockSpawnManager : MonoBehaviour
 #region Inspector
 
     [Header("Referances")]
+    [SerializeField, Tooltip("Kamera Referansı")]
+    private CameraController cam;
+
     [SerializeField, Tooltip("Oluşturulacak bloğun referansı")]
     private GameObject blockPrefab;
 
@@ -77,6 +80,9 @@ public class BlockSpawnManager : MonoBehaviour
         // Hesaplanan pozisyonda yeni bir blok oluştur.
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
 
+        //Kameraya yeni konumunu ayarla.
+        cam.MoveUp(lastBlock.transform.position.y);
+        
         // Yeni bloğun hareket scriptini al.
         BlockMovement movementscript = newBlock.GetComponent<BlockMovement>();
         

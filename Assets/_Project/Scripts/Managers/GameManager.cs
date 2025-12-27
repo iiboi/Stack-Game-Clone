@@ -4,7 +4,13 @@ public class GameManager : MonoBehaviour
 {
     // Singleton yapısı
     public static GameManager instance;
+    
+    //Kamera Refaransı
+    [SerializeField] CameraController cam;
 
+    // Oyunum 0 noktasından başladığı için, ve her bloğumun yüksekliği 0 olduğu için.
+    // score değişkenini aynı zamanda yükseklik değişkeni için kullanacağım.
+    // Örnek Score = 27; Yükseklik = 27;
     public int score = 0;
     public int highScore;
 
@@ -32,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        cam.ShowTower(score);
         Debug.Log("GameOver!!!!");
     }
 }
