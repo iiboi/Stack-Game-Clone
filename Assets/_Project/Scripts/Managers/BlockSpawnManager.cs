@@ -6,6 +6,9 @@ public class BlockSpawnManager : MonoBehaviour
 #region Inspector
 
     [Header("Referances")]
+    [SerializeField, Tooltip("Renk Yöneticisi referansı")]
+    private ColorManager colorManager;
+
     [SerializeField, Tooltip("Kamera Referansı")]
     private CameraController cam;
 
@@ -13,7 +16,6 @@ public class BlockSpawnManager : MonoBehaviour
     private GameObject blockPrefab;
 
     [SerializeField, Tooltip("Oluşturulacak parçanın referansı")]
-
     private GameObject rubblePrefab;
 
     [SerializeField, Tooltip("Yerleştirilen son bloğun konumu (Başlangıçta Ground objesinin konumu).")]
@@ -42,7 +44,10 @@ public class BlockSpawnManager : MonoBehaviour
     {
         // Bloğun yüksekliğini mesh boyutuna göre al.
         blockHeight = lastBlock.GetComponent<MeshRenderer>().bounds.size.y;
-
+        
+        // İlk bloğa rengini ata.
+        lastBlock.GetComponent<Renderer>().material.color = colorManager.GetCurrentColor();
+        
         // İlk hareket eden bloğu oluştur.
         SpawnBlock();
     }
@@ -84,6 +89,8 @@ public class BlockSpawnManager : MonoBehaviour
 
         // Hesaplanan pozisyonda yeni bir blok oluştur.
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
+
+        newBlock.GetComponent<Renderer>().material.color = colorManager.GetNextColor();
 
         //Kameraya yeni konumunu ayarla.
         cam.MoveUp(lastBlock.position.y);
@@ -267,6 +274,8 @@ public class BlockSpawnManager : MonoBehaviour
 
         rubble.transform.position = pos;
         rubble.transform.localScale = scale;
+
+        rubble.GetComponent<Renderer>().material.color = currentBlock.GetComponent<Renderer>().material.color;
 
         // 5 Saniye sonra parçayı yok et.
         Destroy(rubble, 5f);
