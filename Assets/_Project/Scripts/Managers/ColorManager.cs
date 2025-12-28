@@ -6,6 +6,8 @@ public class ColorManager : MonoBehaviour
     
     // Rengin ne kadar hızlı değişeceğini belirleyen ayar.
     [SerializeField] private float hueStep = 0.03f;
+    [SerializeField] private float satStep = 0.04f;
+    [SerializeField] private float valStep = 0.05f;
     
     // Bunlar artık 'sabit' değer değil, formülün 'tavan' değerleri gibi çalışacak.
     [SerializeField] private float saturation = 0.45f;
@@ -48,8 +50,8 @@ public class ColorManager : MonoBehaviour
         currentHue += hueStep;
 
         // Canlılık ve Işık değerlerini de döndür.
-        satParam += hueStep; 
-        valParam += hueStep;
+        satParam += satStep; 
+        valParam += valStep;
         
         // Eğer renk 1'i geçerse başa sar (Sonsuz döngü).
         if (currentHue >= 1f)
