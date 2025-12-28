@@ -317,6 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlockSpawnManager
   cam: {fileID: 330585548}
   blockPrefab: {fileID: 6147015189474140803, guid: 8a9aa8fb220bafa49bc01b15685af90c, type: 3}
+  rubblePrefab: {fileID: 8887039800787876975, guid: 33484902335f95247af2a8b60aea2113, type: 3}
   lastBlock: {fileID: 1197148035}
   currentBlock: {fileID: 0}
   spawnDistance: 6

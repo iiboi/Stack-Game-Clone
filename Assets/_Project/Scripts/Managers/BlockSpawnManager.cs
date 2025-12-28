@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class BlockSpawnManager : MonoBehaviour
@@ -10,6 +11,10 @@ public class BlockSpawnManager : MonoBehaviour
 
     [SerializeField, Tooltip("Oluşturulacak bloğun referansı")]
     private GameObject blockPrefab;
+
+    [SerializeField, Tooltip("Oluşturulacak parçanın referansı")]
+
+    private GameObject rubblePrefab;
 
     [SerializeField, Tooltip("Yerleştirilen son bloğun konumu (Başlangıçta Ground objesinin konumu).")]
     private Transform lastBlock;
@@ -81,7 +86,7 @@ public class BlockSpawnManager : MonoBehaviour
         GameObject newBlock = Instantiate(blockPrefab, spawnPos, Quaternion.identity);
 
         //Kameraya yeni konumunu ayarla.
-        cam.MoveUp(lastBlock.transform.position.y);
+        cam.MoveUp(lastBlock.position.y);
         
         // Yeni bloğun hareket scriptini al.
         BlockMovement movementscript = newBlock.GetComponent<BlockMovement>();
@@ -258,13 +263,10 @@ public class BlockSpawnManager : MonoBehaviour
         GameObject rubble;
 
         // Kesilen parçayı yarat.
-        rubble = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        rubble = Instantiate(rubblePrefab, pos, quaternion.identity);
 
         rubble.transform.position = pos;
         rubble.transform.localScale = scale;
-
-        // Parçaya Rigidbody ekle.
-        rubble.AddComponent<Rigidbody>();
 
         // 5 Saniye sonra parçayı yok et.
         Destroy(rubble, 5f);
