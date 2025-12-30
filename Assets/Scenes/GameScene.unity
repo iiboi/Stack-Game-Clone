@@ -342,6 +342,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   cam: {fileID: 330585548}
+  blockSpawnManager: {fileID: 368568233}
   score: 0
   highScore: 0
 --- !u!114 &368568235
