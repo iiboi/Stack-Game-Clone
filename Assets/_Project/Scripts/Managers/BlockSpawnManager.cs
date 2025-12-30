@@ -6,6 +6,10 @@ public class BlockSpawnManager : MonoBehaviour
 #region Inspector
 
     [Header("Referances")]
+
+    [SerializeField, Tooltip("Efekt Yöneticisi referansı")]
+    private EffectManager effectManager;
+
     [SerializeField, Tooltip("Renk Yöneticisi referansı")]
     private ColorManager colorManager;
 
@@ -29,7 +33,7 @@ public class BlockSpawnManager : MonoBehaviour
     private float spawnDistance = 6f;
     
     [SerializeField, Tooltip("Bloğun Göz yumulacak eksen farkı.")]
-    private float blockTolerance = 0.13f;
+    public float blockTolerance = 0.12f;
     
     [SerializeField, Tooltip("Bloğun Yüksekliği.")]
     private float blockHeight;
@@ -125,9 +129,9 @@ public class BlockSpawnManager : MonoBehaviour
                 
                 diffX = 0;
 
-                Debug.Log("Perfect X !");
-                //TODO
-                //    EFFECT
+                effectManager.PlayPerfectEffect(currentBlock.transform.position,
+                currentBlock.GetComponent<Renderer>().material.color,
+                new Vector3(currentBlock.transform.localScale.x, currentBlock.transform.localScale.z, 1f));
             }
 
             // Kesildikten sonra kalacak yeni genişliği hesapla.
@@ -193,10 +197,11 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.y, lastBlock.position.z);
 
                 diffZ = 0;
-
-                Debug.Log("Perfect Z !");
-                //TODO
-                //    EFFECT
+                
+                // Efekti çağır.
+                effectManager.PlayPerfectEffect(currentBlock.transform.position,
+                currentBlock.GetComponent<Renderer>().material.color,
+                new Vector3(currentBlock.transform.localScale.x, currentBlock.transform.localScale.z, 1f));
             }
 
             // Kesildikten sonra kalacak yeni derinliği hesapla.
