@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 368568233}
   - component: {fileID: 368568234}
   - component: {fileID: 368568235}
+  - component: {fileID: 368568236}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -316,6 +317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14cf1d7f0d788647b9f8b70ef11e498, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockSpawnManager
+  effectManager: {fileID: 368568236}
   colorManager: {fileID: 368568235}
   cam: {fileID: 330585548}
   blockPrefab: {fileID: 6147015189474140803, guid: 8a9aa8fb220bafa49bc01b15685af90c, type: 3}
@@ -323,7 +325,7 @@ MonoBehaviour:
   lastBlock: {fileID: 1197148035}
   currentBlock: {fileID: 0}
   spawnDistance: 6
-  blockTolerance: 0.13
+  blockTolerance: 0.12
   blockHeight: 0
   isMovingOnX: 1
 --- !u!114 &368568234
@@ -339,6 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   cam: {fileID: 330585548}
+  blockSpawnManager: {fileID: 368568233}
   score: 0
   highScore: 0
 --- !u!114 &368568235
@@ -354,9 +357,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ColorManager
   hueStep: 0.03
+  satStep: 0.04
+  valStep: 0.05
   saturation: 0.45
   value: 0.85
   backgroundColorLerpSpeed: 2.5
+--- !u!114 &368568236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368568231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6359b6f413a69ee40894c236ee6fe946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EffectManager
+  perfectEffectPrefab: {fileID: 5080190995648642737, guid: b7e77a77a8170d645b5fe619c6f97b45, type: 3}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
