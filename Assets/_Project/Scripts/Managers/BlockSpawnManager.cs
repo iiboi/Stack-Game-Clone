@@ -56,14 +56,13 @@ public class BlockSpawnManager : MonoBehaviour
         SpawnBlock();
     }
 
-    private void Update() 
+    public void StopAndSplitBlock()
     {
-        // Fare tıklanınca bloğun hareketini durdur ve kesme işlemini yap.
-        if (Input.GetMouseButtonDown(0))
-        {
-            currentBlock.GetComponent<BlockMovement>().StopMoving();
-            SplitBlock();
-        }
+        if (currentBlock == null) return;
+
+        currentBlock.GetComponent<BlockMovement>().StopMoving();
+        SplitBlock();
+        
     }
 
 #region Block Spawn

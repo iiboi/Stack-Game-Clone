@@ -282,6 +282,7 @@ GameObject:
   - component: {fileID: 368568233}
   - component: {fileID: 368568234}
   - component: {fileID: 368568235}
+  - component: {fileID: 368568237}
   - component: {fileID: 368568236}
   m_Layer: 0
   m_Name: Managers
@@ -341,7 +342,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   cam: {fileID: 330585548}
-  blockSpawnManager: {fileID: 368568233}
   score: 0
   highScore: 0
 --- !u!114 &368568235
@@ -375,6 +375,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EffectManager
   perfectEffectPrefab: {fileID: 5080190995648642737, guid: b7e77a77a8170d645b5fe619c6f97b45, type: 3}
+--- !u!114 &368568237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368568231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c26d5ac95f7a10443a8afe920c693d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputManager
+  blockSpawnManager: {fileID: 368568233}
 --- !u!1 &410087039
 GameObject:
   m_ObjectHideFlags: 0
