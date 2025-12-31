@@ -7,6 +7,9 @@ public class BlockSpawnManager : MonoBehaviour
 
     [Header("Referances")]
 
+    [SerializeField, Tooltip("Ses Yöneticisi Referansı")]
+    private AudioManager audioManager;
+
     [SerializeField, Tooltip("Efekt Yöneticisi referansı")]
     private EffectManager effectManager;
 
@@ -127,6 +130,8 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.y, lastBlock.position.z);
                 
                 diffX = 0;
+                // Perfect sesini çal.
+                audioManager.PlayPerfectSound();
 
                 effectManager.PlayPerfectEffect(currentBlock.transform.position,
                 currentBlock.GetComponent<Renderer>().material.color,
@@ -180,6 +185,8 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.z);
 
                 CreateRubble(rubblePos, rubbleXScale);
+                
+                audioManager.currentPitch = 1.0f;
             }
                 //GameManager içerisindeki Score değişkenini artır.
                 GameManager.instance.IncreaseScore();
@@ -196,6 +203,9 @@ public class BlockSpawnManager : MonoBehaviour
                 currentBlock.transform.position.y, lastBlock.position.z);
 
                 diffZ = 0;
+                
+                // Perfect sesini çal.
+                audioManager.PlayPerfectSound();
                 
                 // Efekti çağır.
                 effectManager.PlayPerfectEffect(currentBlock.transform.position,
@@ -251,8 +261,9 @@ public class BlockSpawnManager : MonoBehaviour
 
                 CreateRubble(rubblePos, rubbleZScale);
 
+                audioManager.currentPitch = 1.0f;
             }
-                //GameManager içerisindeki Score değişkenini artır.
+            //GameManager içerisindeki Score değişkenini artır.
                 GameManager.instance.IncreaseScore();
         }
 
