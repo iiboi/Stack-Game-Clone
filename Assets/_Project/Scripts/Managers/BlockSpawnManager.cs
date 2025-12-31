@@ -55,7 +55,10 @@ public class BlockSpawnManager : MonoBehaviour
         // İlk bloğa rengini ata.
         lastBlock.GetComponent<Renderer>().material.color = colorManager.GetCurrentColor();
         
-        // İlk hareket eden bloğu oluştur.
+    }
+
+    public void ActivateGame()
+    {
         SpawnBlock();
     }
 
