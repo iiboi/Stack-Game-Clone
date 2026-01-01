@@ -6,17 +6,19 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     
     [Header("References")]
-    [SerializeField] CameraController cam;
+    [SerializeField] CameraController cameraController;
     [SerializeField] BlockSpawnManager blockSpawnManager;
 
     private int score = 0;
     private int highScore;
-    private float decreaseTolerance = 0.02f;
+    private float decreaseTolerance = 0.01f;
 
     private void Awake() 
     {   
         instance = this;
-    
+        
+        Application.targetFrameRate = 60;
+        
         score = 0;
         highScore = PlayerPrefs.GetInt("HighScore", 0);
     }
@@ -56,8 +58,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        cam.ShowTower(score);
-        Debug.Log("GameOver!!!!");
+        cameraController.ShowTower(score);
+        // Debug.Log("GameOver!!!!");
 
         if (UIManager.instance != null)
         {

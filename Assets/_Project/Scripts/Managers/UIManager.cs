@@ -50,7 +50,6 @@ public class UIManager : MonoBehaviour
         gameScoreText.text = currentScore.ToString();
     }
 
-    // İSMİNİ DEĞİŞTİRDİM: Hem skoru yazıyor hem de ekranı açıyor.
     public void ShowGameOverScreen(int score)
     {
         gameScreen.SetActive(false);
